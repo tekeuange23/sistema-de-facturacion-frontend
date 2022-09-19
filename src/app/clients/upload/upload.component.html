@@ -1,0 +1,53 @@
+<div *ngIf="modalService.modal"  class="open-modal animation fadeIn">
+  <div  class="modal d-block" id="exampleModalCenter" tabindex="-1" role="dialog"  >
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{ "Upload Image" }}</h5>
+          <button (click)="closeModal()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm">
+                <!-- INFO -->
+                <ul *ngIf="client" class="list-group text-dark mb-3">
+                  <li class="list-group-item active">{{ client.firstName }}</li>
+                  <li class="list-group-item">{{ client.lastName }}</li>
+                  <li class="list-group-item">{{ client.email }}</li>
+                  <li class="list-group-item">{{ client.updatedAt | date: "fullDate" }}</li>
+                  <li class="list-group-item">{{ client.region.name }}</li>
+                </ul>
+                <!-- FILE -->
+                <div class="input-group mb-2">
+                  <input (change)="selectPhoto($event)" type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+                  <button (click)="submitPhoto()" [disabled]="!selectedPhoto" class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">Submit</button>
+                </div>
+                <!-- PROGRESS -->
+                <div *ngIf="progress > 0" class="progress">
+                  <div class="progress-bar progress-bar-striped"
+                      role="progressbar" [ngStyle]="{width: progress + '%'}" attr.aria-valuenow="{{progress}}"
+                      aria-valuemin="0" aria-valuemax="100">
+                    {{ progress }}%
+                  </div>
+                </div>
+              </div>
+              <!-- IMAGE -->
+              <div *ngIf="client?.photo" class="col-sm">
+                <img [src]="url + '/api/uploads/img/' + client?.photo"
+                     [alt]="client?.photo" class="img-thumbnail rounded">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button (click)="closeModal()" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

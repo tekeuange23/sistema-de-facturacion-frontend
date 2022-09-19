@@ -1,0 +1,111 @@
+<div *ngIf="clientForm" class="m-auto text-white card bg-dark w-75">
+  <div class="card-header d-flex justify-content-between">
+    <button [routerLink]="['/']" class="btn btn-secondary">
+      <i class="bi bi-arrow-return-left">back</i>
+    </button>
+
+    <h5 class="align-baseline">{{ title }}</h5>
+
+    <div class="text-right">
+      <button
+        class="btn btn-rounded btn-primary"
+        type="button"
+        (click)="getMode(true)"
+        *ngIf="!isAddMode()"
+        [ngClass]="{ 'btn-danger': isEditMode() }"
+      >
+        {{ toggleButtonTitle }}
+      </button>
+    </div>
+  </div>
+
+  <div class="h-75 card-body">
+    <form (ngSubmit)="onSubmit()" [formGroup]="clientForm">
+      <!-- FIRSTNAME -->
+      <div class="mb-4 form-group row">
+        <label for="firstName" class="col-form-label col-sm-2 offset-md-2">First Name:</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="firstName" formControlName="firstName" *ngIf="isAddOrEditMode()"/>
+          <span
+            class="help-block text-info"
+            *ngIf=" !clientForm.get('firstName').valid && clientForm.get('firstName').touched && !isShowMode() " >Exceed whitespace.</span >
+          <span class="border-0 form-control bg-dark text-white-50" *ngIf="!isAddOrEditMode()" >{{ client.firstName }}</span >
+        </div>
+      </div>
+      <!-- LASTNAME -->
+      <div class="mb-4 form-group row">
+        <label for="lastName" class="col-form-label col-sm-2 offset-md-2"
+          >Last Name:</label
+        >
+        <div class="col-sm-6">
+          <input
+            type="text"
+            class="form-control"
+            id="lastName"
+            formControlName="lastName"
+            *ngIf="isAddOrEditMode()"
+          />
+          <span
+            class="help-block text-info"
+            *ngIf="
+              !clientForm.get('lastName').valid &&
+              clientForm.get('lastName').touched &&
+              !isShowMode()
+            "
+            >Should contain at least 3 characters.</span
+          >
+          <span
+            class="border-0 form-control bg-dark text-white-50"
+            *ngIf="!isAddOrEditMode()"
+            >{{ client.lastName }}</span
+          >
+        </div>
+      </div>
+      <!-- EMAIL -->
+      <div class="mb-4 form-group row">
+        <label for="email" class="col-form-label col-sm-2 offset-md-2">Email:</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="email" formControlName="email" *ngIf="isAddOrEditMode()"/>
+          <span class="help-block text-info" *ngIf="!clientForm.get('email').valid && clientForm.get('email').touched && !isShowMode()">
+            {{'Enter a valid email.'}}
+          </span>
+          <span class="border-0 form-control bg-dark text-white-50" *ngIf="!isAddOrEditMode()">
+            {{ client.email }}
+          </span>
+        </div>
+      </div>
+      <!-- REGION -->
+      <div class="mb-4 form-group row">
+        <label for="region" class="col-form-label col-sm-2 offset-md-2"> Region: </label>
+        <div class="col-sm-6">
+          <div class="input-group">
+            <select *ngIf="isAddOrEditMode()" class="custom-select w-100" id="region" formControlName="regionId">
+              <option [ngValue]="0" selected> --- select a region --- </option>
+              <option *ngFor="let region of regions" [value]="region.id"> {{ region.name }} </option>
+            </select>
+
+            <span class="d-block help-block text-info" *ngIf="!clientForm.get('regionId').valid && clientForm.get('regionId').touched && !isShowMode()">
+                  {{ 'Select a region.' }}
+            </span>
+            <span class="border-0 form-control bg-dark text-white-50"
+                  *ngIf="!isAddOrEditMode()">{{ client.region?.name }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!--------------------------------------                  ------------------------------------------------------>
+      <div class="h-100 form-group row">
+        <div class="text-right col-sm-10">
+          <input class="invisible btn btn-primary" [value]="buttonTitle" />
+          <input
+            class="btn btn-primary"
+            type="submit"
+            [value]="buttonTitle"
+            *ngIf="isAddOrEditMode()"
+            [disabled]="!clientForm.valid"
+          />
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
